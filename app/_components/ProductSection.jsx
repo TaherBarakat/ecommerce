@@ -16,7 +16,7 @@ function ProductSection() {
      console.log(productList);
 
      return (
-          <div className="px-10 md:px-20">
+          <div className="px-10 md:px-20 w-[95vw] ">
                <h2 className="my-4 text-3xl ">Our Lates Products</h2>
                <ProductList productList={productList} />
           </div>

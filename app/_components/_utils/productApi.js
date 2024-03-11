@@ -1,5 +1,5 @@
 import axiosClint from "./axiosClint";
 
 const getLatestProducts = () => axiosClint.get("/products?populate=*");
-
-export default { getLatestProducts };
+const getProductById = (id) => axiosClint.get(`products/${id}?populate=*`);
+export default { getLatestProducts, getProductById };
