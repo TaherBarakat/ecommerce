@@ -18,7 +18,6 @@ function ProductDetails({ params }) {
                     .then((res) => setProductList(res?.data?.data));
           });
      }, [params?.productid]);
-     console.log(productList);
 
      return (
           <div className="px-10 py-8 md:px-28">
