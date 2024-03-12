@@ -1,18 +1,27 @@
 "use client";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import { useUser } from "@clerk/nextjs";
+import { UserButton } from "@clerk/nextjs";
+import { ShoppingCart } from "lucide-react";
+import { usePathname } from "next/navigation";
+
 function Header() {
-     const user = useUser();
+     const [isLoggedIn, setIsLoggedIn] = useState();
+     const path = usePathname();
+     useEffect(() => {
+          setIsLoggedIn(window.location.href.toString().includes("sign-in"));
+     }, [path]);
+     const { user } = useUser();
      return (
-          !user && (
-               <header className="bg-white dark:bg-gray-900">
-                    <div className="mx-auto flex h-16 max-w-screen-xl items-center gap-8 px-4 sm:px-6 lg:px-8 shadow-md">
+          !isLoggedIn && (
+               <header className="bg-white  shadow-md dark:bg-black">
+                    <div className="mx-auto flex h-16 max-w-screen-xl items-center gap-8 px-4 sm:px-6 lg:px-8 ">
                          <Image
                               src="/logo.svg"
                               alt="logo"
-                              width={50}
-                              height={50}
+                              width={40}
+                              height={40}
                          />
 
                          <div className="flex flex-1 items-center justify-end md:justify-between">
@@ -24,7 +33,7 @@ function Header() {
                                         <li>
                                              <a
                                                   className="text-gray-500 transition hover:text-gray-500/75 dark:text-white dark:hover:text-white/75"
-                                                  href="#"
+                                                  href="/"
                                              >
                                                   Home
                                              </a>
@@ -67,23 +76,32 @@ function Header() {
                                         </li>
                                    </ul>
                               </nav>
-
                               <div className="flex items-center gap-4">
-                                   <div className="sm:flex sm:gap-4">
-                                        <a
-                                             className="block rounded-md bg-primary px-5 py-2.5 text-sm font-medium text-white transition hover:bg-teal-500 dark:hover:bg-teal-500"
-                                             href="#"
-                                        >
-                                             Login
-                                        </a>
+                                   {!user ? (
+                                        <div className="sm:flex sm:gap-4">
+                                             <a
+                                                  className="block rounded-md bg-primary px-5 py-2.5 text-sm font-medium text-white transition hover:bg-teal-500 dark:hover:bg-teal-500"
+                                                  href="/sign-in"
+                                             >
+                                                  Login
+                                             </a>
 
-                                        <a
-                                             className="hidden rounded-md bg-gray-100 px-5 py-2.5 text-sm font-medium text-teal-600 transition hover:text-teal-500/75 sm:block dark:bg-gray-800 dark:text-white dark:hover:text-white/75"
-                                             href="#"
-                                        >
-                                             Register
-                                        </a>
-                                   </div>
+                                             <a
+                                                  className="hidden rounded-md bg-gray-100 px-5 py-2.5 text-sm font-medium text-teal-600 transition hover:text-teal-500/75 sm:block dark:bg-gray-800 dark:text-white dark:hover:text-white/75"
+                                                  href="#"
+                                             >
+                                                  Register
+                                             </a>
+                                        </div>
+                                   ) : (
+                                        <div className="flex flex-row gap-5 items-center">
+                                             <h2 className="flex flex-row gap-1 cursor-pointer  items-center text-gray-500 transition hover:text-gray-500/75 dark:text-white dark:hover:text-white/75">
+                                                  <ShoppingCart className="" />
+                                                  (0)
+                                             </h2>
+                                             <UserButton afterSignOutUrl=" http://localhost:3000/sign-in" />
+                                        </div>
+                                   )}
 
                                    <button className="block rounded bg-gray-100 p-2.5 text-gray-600 transition hover:text-gray-600/75 md:hidden dark:bg-gray-800 dark:text-white dark:hover:text-white/75">
                                         <span className="sr-only">
